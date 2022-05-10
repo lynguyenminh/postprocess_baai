@@ -26,4 +26,4 @@ def score(hcn1, hcn2):
             
 
 # print(overlap_area(hcn1, hcn2))
-print(area(hcn1))
+# print(area(hcn1))

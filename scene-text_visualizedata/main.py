@@ -4,11 +4,12 @@ from os.path import isfile, join
 
 
 def list_file(mypath):
-    return [mypath + '\\' + f for f in listdir(mypath) if isfile(join(mypath, f))]
+    return [mypath + '/' + f for f in listdir(mypath) if isfile(join(mypath, f))]
 
-txt_list = list_file(r'D:\scene-text_visualizedata\txt_output')
-img_list = list_file(r'D:\scene-text_visualizedata\public_test_img')
+txt_list = list_file(r'/home/lynm/Desktop/postprocess_baai/output')
+img_list = list_file(r'/home/lynm/Desktop/postprocess_baai/scene-text_visualizedata/public_test_img')
 
+# print(img_list)
 # print(len(txt_list))
 # print(len(txt_list))
 # print(len(img_list))
@@ -42,13 +43,15 @@ def visulize(img_path, txt_path):
         # image = cv2.putText(img, coor[8], (coor[6], coor[7]), font, fontScale, color, thickness, cv2.LINE_AA)
 
 
-    cv2.imwrite(r'D:\scene-text_visualizedata\visulize_predict' + '\\' + img_path.split('\\')[-1], img)
+    cv2.imwrite(r'/home/lynm/Desktop/postprocess_baai/scene-text_visualizedata/visulize_predict/' + img_path.split('/')[-1], img)
 
 
 
 for i in txt_list:
-    img_name = i[:28] + 'public_test_img\\img_' + i.split('\\')[-1][4:-3] + 'jpg'
+    img_name = i[:-23] + '/scene-text_visualizedata/public_test_img/' + i.split('/')[-1][4:-3] + 'jpg'
+
     print(img_name)
+
     visulize(img_name, i)
 # visulize('D:\\scene-text_visualizedata\\train_imgs\\training_img\\img_2.jpg', 'D:\\scene-text_visualizedata\\train_gt\\training_gt\\gt_img_2.txt')
 
