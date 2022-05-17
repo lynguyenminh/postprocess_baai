@@ -60,7 +60,7 @@ def group(list_read_from_txt):
 
     # loai bo list trung
     list_box_overlap = [list(t) for t in set(tuple(element) for element in list_box_overlap)]
-
+    # print(list_box_overlap)
     final_list = []
     for i in range(len(list_read_from_txt)):
         merge_id = []
@@ -84,18 +84,30 @@ def check_fullso(strings):
     '''
     check xem 1 string co chua toan so va dau cham ko => check sdt
     '''
-    so = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']
+    so = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '(', ')']
     for i in strings: 
         if i not in so: 
             return False
     return True
 
+def check_sdt(lines, list_idx):
+    flag = 0
+    for i in list_idx: 
+        if check_fullso(lines[i][8][:-1]) == False:
+            return False
+        if '.' in lines[i][8][:-1]:
+            flag = 1
+    
+    if flag ==0: 
+        return False
+    else:
+        return True
 
 def main_handle(path_txt):
     '''
     xu ly nhom cac bounding box bi overlap'''
     group_box = group(handle_coor_infile(path_txt))
-
+    print(group_box)
     final_box = []
     coor_file = handle_coor_infile(path_txt)
     for i in group_box: 
@@ -117,8 +129,9 @@ def main_handle(path_txt):
             lines = f.readlines()
             lines = [i.split(',') for i in lines]
 
-            if (check_fullso(lines[i[0]][8][:-1]) and check_fullso(lines[i[1]][8][:-1]) and check_fullso(lines[i[2]][8][:-1])): 
+            # if (check_fullso(lines[i[0]][8][:-1]) and check_fullso(lines[i[1]][8][:-1]) and check_fullso(lines[i[2]][8][:-1])): 
                 # gop
+            if check_sdt(lines, i):
                 dt1 = area(coor_file[i[0]])
                 dt2 = area(coor_file[i[1]])
                 dt3 = area(coor_file[i[2]])
@@ -133,13 +146,59 @@ def main_handle(path_txt):
                 elif dt3 == max(dt1, dt2, dt3):
                     # final_box.append(coor_file[i[2]])
                     final_box.append(i[2])
+            else: 
+                dt1 = area(coor_file[i[0]])
+                dt2 = area(coor_file[i[1]])
+                dt3 = area(coor_file[i[2]])
+                # print(dt1, dt2, dt3)
 
+                if dt1 != max(dt1, dt2, dt3):
+                    # final_box.append(coor_file[i[0]])
+                    final_box.append(i[0])
+                if dt2 != max(dt1, dt2, dt3):
+                    # final_box.append(coor_file[i[1]])
+                    final_box.append(i[1])
+                if dt3 != max(dt1, dt2, dt3):
+                    # final_box.append(coor_file[i[2]])
+                    final_box.append(i[2])
+        else: 
+            # so dien thoai(chua so va dau cham) => gop thanh 1
+            f = open(path_txt, 'r')
+            lines = f.readlines()
+            lines = [i.split(',') for i in lines]
+
+            if check_sdt(lines, i):
+                dt = []
+                for n in range(len(i)):
+                    dt.append(area(coor_file[i[n]]))
+
+                for n in range(len(i)):
+                    if area(coor_file[i[n]]) == max(dt):
+                        final_box.append(i[n])
+            else: 
+                # xu ly chu
+                # TINH DIEN TICH TUNG BOX
+                list_area = []
+                for bb in i: 
+                    dt = area(coor_file[bb])
+                    list_area.append(dt)
+                # print(list_area)
+
+                # GHI BOX CO GIA TRI KO LON NHAT
+                for dt in list_area:
+                    if dt != max(list_area):
+                        final_box.append(i[list_area.index(dt)])
+
+                
+        
     return final_box
 
 
 def main(path_txt):
     '''
-    ham tong hop code'''
+    ham tong hop code
+    final_box là mang index
+    final_coor là mang toa do lay ra tu final_box va file txt'''
     final_box = main_handle(path_txt)
 
     f = open(path_txt, 'r')
@@ -150,5 +209,7 @@ def main(path_txt):
         final_coor.append(lines[i])
 
     return final_coor
+    # return final_box
 
-# print(main('./output/res_img_506.txt'))
+
+print(main('./submission/res_img_713.txt'))

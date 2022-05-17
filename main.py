@@ -10,13 +10,15 @@ def list_file(mypath):
     return onlyfiles
 
 
-
-txt_file = list_file('./output')
+# path folder predicted
+txt_file = list_file('./submission')
 
 for i in txt_file: 
-    non_overlap = main(i)
     print(i)
+    non_overlap = main(i)
+    # print(non_overlap)
     f = open('./non_overlap/' + i.split('/')[-1], 'w')
     for j in non_overlap: 
+        # print(j)
         f.writelines(j)
     f.close()

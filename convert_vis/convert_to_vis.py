@@ -8,7 +8,7 @@ POINT_TRANS_8      = COORS_8 + ',(.*)$'
 
 with zipfile.ZipFile('visualize.zip', 'a') as viszip:
 
-    with zipfile.ZipFile('output-20220423T011651Z-001.zip', 'r') as archive:
+    with zipfile.ZipFile('./non_overlap.zip', 'r') as archive:
         for name in archive.namelist():
             if not name.endswith('.txt'):
                 continue
