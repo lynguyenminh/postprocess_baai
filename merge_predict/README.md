@@ -7,3 +7,5 @@ Cách merge:
     python3 merge.py --txt_1 <fol_1> --txt_2 <fol_2>
 
 fol_1, fol_2: là path của 2 folder chứa file cần merge.
+
+Ảnh sau khi vẽ nằm trong ./results

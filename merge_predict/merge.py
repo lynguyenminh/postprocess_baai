@@ -1,6 +1,8 @@
 from os import listdir
 from os.path import isfile, join
 import argparse
+import os
+
 
 def get_parser():
     parser = argparse.ArgumentParser()
@@ -40,5 +42,8 @@ def merge(args):
         f.close()
         
 if __name__=="__main__":
+    if not os.path.exists('./results'):
+        os.makedirs('./results')
+        
     args = get_parser()
     merge(args)
