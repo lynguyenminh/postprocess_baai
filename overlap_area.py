@@ -24,6 +24,3 @@ def area(a):
 def score(hcn1, hcn2):
     return overlap_area(hcn1, hcn2)/ min(area(hcn1), area(hcn2))
             
-
-# print(overlap_area(hcn1, hcn2))
-# print(area(hcn1))
